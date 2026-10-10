@@ -1,0 +1,12 @@
+# 大体积数据文件不入库，按本目录 README 说明下载
+data/*.csv
+data/*.zip
+
+# Jupyter / Python 缓存
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+
+# 系统文件
+.DS_Store
+Thumbs.db

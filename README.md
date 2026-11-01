@@ -76,8 +76,8 @@ airbnb-hotel-booking-data-analysis/
 ## 复现方式
 
 1. 安装依赖：`pip install -r requirements.txt`
-2. 按 [data/README.md](data/README.md) 下载三个 CSV 数据集并放入 `data/` 目录；
-3. 按 01 → 05 顺序运行各 notebook（Jupyter 中可 Kernel → Restart & Run All）。
+2. 数据集已全部随仓库提供在 `data/` 目录，无需另行下载；
+3. 按 01 → 06 顺序运行各 notebook（Jupyter 中可 Kernel → Restart & Run All）。
 
 ## 数据集来源
 

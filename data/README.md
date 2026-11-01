@@ -8,6 +8,7 @@
 | `hotel_bookings.csv` | 17 MB | https://www.kaggle.com/datasets/jessemostipak/hotel-booking-demand |
 | `creditcard-reduced.csv` | 12 MB | 课程提供的缩减版（32,764 条）；母集为 https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud |
 | `iris.txt` | 5 KB | 已随仓库提供，无需下载 |
+| `Q5BTC-USD.csv` | 32 KB | 已随仓库提供（Bitcoin 2018 年收盘价小数据集，课程时间序列作业用） |
 
 放置后本目录结构为：
 
@@ -17,6 +18,7 @@ data/
 ├── hotel_bookings.csv
 ├── creditcard-reduced.csv
 ├── iris.txt
+├── Q5BTC-USD.csv
 └── README.md
 ```
 

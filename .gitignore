@@ -1,6 +1,8 @@
 # 大体积数据文件不入库，按本目录 README 说明下载
 data/*.csv
 data/*.zip
+# 小体积课程数据随仓库提供
+!data/Q5BTC-USD.csv
 
 # Jupyter / Python 缓存
 .ipynb_checkpoints/

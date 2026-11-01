@@ -1,7 +1,7 @@
-# 短租与酒店预订数据分析：数据质量、特征选择、客户分群与欺诈检测分类
+# IS6400 数据分析课程作业集：数据质量、特征工程、聚类、分类与时间序列预测
 
 > 香港城市大学 · MSc in Electronic Commerce · IS6400 课程项目（个人独立完成）
-> 技术栈：Python / pandas / scikit-learn / Matplotlib / Seaborn
+> 技术栈：Python / pandas / scikit-learn / statsmodels / Matplotlib / Seaborn
 
 ## 项目简介
 
@@ -22,6 +22,7 @@
 | [03_feature_selection.ipynb](notebooks/03_feature_selection.ipynb) | 特征选择方法对比 | 卡方检验、ANOVA F 值（Filter）；序列前向选择、随机森林 RFE（Wrapper） |
 | [04_hotel_customer_segmentation.ipynb](notebooks/04_hotel_customer_segmentation.ipynb) | 酒店客户聚类分群 | K-Means、二分 K-Means、DBSCAN、层次聚类对比；肘部法则与轮廓系数选 K；客群画像 |
 | [05_credit_card_fraud_classification.ipynb](notebooks/05_credit_card_fraud_classification.ipynb) | 信用卡欺诈检测：集成分类模型对比与不平衡处理 | 决策树、随机森林、Bagging、AdaBoost、Stacking 对比；准确率/精确率/召回率/F1 与混淆矩阵；`class_weight='balanced'` 类别加权 |
+| [06_bitcoin_time_series.html](notebooks/06_bitcoin_time_series.html) | Bitcoin 收盘价时间序列：平稳性检验与 ETS 预测 | ADF 单位根检验、一阶差分、ETS 水平模型 vs ETS 加趋势模型、RMSE 对比、滚动预测方法论 |
 
 ## 主要分析结论
 
@@ -47,6 +48,11 @@
 - 在欺诈占比仅约 1.5% 的不平衡样本上对比五种模型，**决策树与 Bagging 表现最好（F1 = 0.9949，召回率 0.9898）**，AdaBoost 次之（F1 = 0.9924）；随机森林在本实验浅树（max_depth=2）配置下召回率最低（0.8173），漏掉更多欺诈交易；
 - 对不平衡问题，设置 `class_weight='balanced'` 后召回率由 0.9746 提升至 0.9848（漏判欺诈由 5 笔降至 3 笔），F1 由 0.9846 升至 0.9898；欺诈场景下召回率比整体准确率更重要。
 
+**时间序列预测（Bitcoin）**
+- 原始收盘价 ADF 检验 p ≈ 0.55（非平稳），一阶差分后 p < 1e-9（平稳），预测时应对差分序列建模；
+- 基础 ETS（水平）预测未来 5 天 RMSE ≈ 190.56，加性趋势 ETS RMSE ≈ 196.43——在该测试段上**加趋势反而略微增大误差**，说明并非成分越多越好；
+- 方法论上应采用滚动预测（rolling forecast）：逐日重训、用 RMSE/MAE 评估，而非仅用一次性 5 天外推。
+
 ## 目录结构
 
 ```
@@ -56,13 +62,15 @@ airbnb-hotel-booking-data-analysis/
 ├── .gitignore
 ├── data/
 │   ├── README.md            # 数据集下载说明（大文件不入库）
-│   └── iris.txt             # Iris 小数据集（随仓库提供）
+│   ├── iris.txt             # Iris 小数据集（随仓库提供）
+│   └── Q5BTC-USD.csv        # Bitcoin 收盘价小数据集（随仓库提供）
 └── notebooks/
     ├── 01_airbnb_eda_and_data_quality.ipynb
     ├── 02_hotel_booking_cancellation_analysis.ipynb
     ├── 03_feature_selection.ipynb
     ├── 04_hotel_customer_segmentation.ipynb
-    └── 05_credit_card_fraud_classification.ipynb
+    ├── 05_credit_card_fraud_classification.ipynb
+    └── 06_bitcoin_time_series.html
 ```
 
 ## 复现方式

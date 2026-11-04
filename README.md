@@ -5,11 +5,12 @@
 
 ## 项目简介
 
-基于三个真实数据集，使用 Python 完成从**数据质量评估、探索性数据分析（EDA）、特征选择、无监督聚类分群到不平衡监督分类建模**的完整数据分析流程：
+基于四个真实数据集，使用 Python 完成从**数据质量评估、探索性数据分析（EDA）、特征选择、无监督聚类分群、不平衡监督分类到时间序列预测**的完整数据分析流程：
 
 - **Airbnb 房源数据**：约 6.8 万条欧洲城市房源记录，覆盖房价、房源类型、容纳人数、评分等字段；
 - **Hotel Booking Demand 酒店预订数据**：119,390 条葡萄牙两家酒店的预订记录、32 个字段（Antonio et al., *Data in Brief*, 2019）；
-- **信用卡交易数据**：32,764 条脱敏交易记录（PCA 变换后的 V1–V28 特征），其中欺诈交易 492 条，用于不平衡分类与集成模型对比。
+- **信用卡交易数据**：32,764 条脱敏交易记录（PCA 变换后的 V1–V28 特征），其中欺诈交易 492 条，用于不平衡分类与集成模型对比；
+- **气象数据（weather）**：德国 Jena 气象站 2009–2016 年小时级观测，重采样为 96 个月度平均温度，用于季节性时间序列建模与预测。
 
 ## Notebook 导航
 
@@ -22,7 +23,8 @@
 | [03_feature_selection.ipynb](notebooks/03_feature_selection.ipynb) | 特征选择方法对比 | 卡方检验、ANOVA F 值（Filter）；序列前向选择、随机森林 RFE（Wrapper） |
 | [04_hotel_customer_segmentation.ipynb](notebooks/04_hotel_customer_segmentation.ipynb) | 酒店客户聚类分群 | K-Means、二分 K-Means、DBSCAN、层次聚类对比；肘部法则与轮廓系数选 K；客群画像 |
 | [05_credit_card_fraud_classification.ipynb](notebooks/05_credit_card_fraud_classification.ipynb) | 信用卡欺诈检测：集成分类模型对比与不平衡处理 | 决策树、随机森林、Bagging、AdaBoost、Stacking 对比；准确率/精确率/召回率/F1 与混淆矩阵；`class_weight='balanced'` 类别加权 |
-| [06_bitcoin_time_series.html](notebooks/06_bitcoin_time_series.html) | Bitcoin 收盘价时间序列：平稳性检验与 ETS 预测 | ADF 单位根检验、一阶差分、ETS 水平模型 vs ETS 加趋势模型、RMSE 对比、滚动预测方法论 |
+| [06_bitcoin_time_series.ipynb](notebooks/06_bitcoin_time_series.ipynb) | Bitcoin 收盘价时间序列：平稳性检验与 ETS 预测 | ADF 单位根检验、一阶差分、ETS 水平模型 vs ETS 加趋势模型、RMSE 对比、滚动预测方法论 |
+| [07_weather_forecasting.ipynb](notebooks/07_weather_forecasting.ipynb) | 月度平均温度预测：ARIMA 与 ETS(Holt-Winters) 对比 | 重采样、KPSS 平稳性检验、Box-Cox 变换、去季节/去趋势、ARIMA 与 Holt-Winters 预测、RMSE 对比 |
 
 ## 主要分析结论
 
@@ -53,31 +55,38 @@
 - 基础 ETS（水平）预测未来 5 天 RMSE ≈ 190.56，加性趋势 ETS RMSE ≈ 196.43——在该测试段上**加趋势反而略微增大误差**，说明并非成分越多越好；
 - 方法论上应采用滚动预测（rolling forecast）：逐日重训、用 RMSE/MAE 评估，而非仅用一次性 5 天外推。
 
+**时间序列预测（Weather）**
+- 月度温度含明显的 12 个月季节周期，KPSS 检验显示原始序列非平稳（p ≈ 0.026），经 Box-Cox、去季节与一阶差分后转为平稳；
+- 对比两类模型：ARIMA 流水线测试集 RMSE ≈ 1.96，ETS（Holt-Winters，加性趋势 + 加性季节）RMSE ≈ 1.93；
+- 两者都能较好捕捉年度季节模式，**ETS 因直接建模趋势与季节成分，误差略低**。
+
 ## 目录结构
 
 ```
-airbnb-hotel-booking-data-analysis/
+data-analysis-projects/
 ├── README.md
 ├── requirements.txt
 ├── .gitignore
 ├── data/
-│   ├── README.md            # 数据集下载说明（大文件不入库）
+│   ├── README.md            # 数据集说明
 │   ├── iris.txt             # Iris 小数据集（随仓库提供）
-│   └── Q5BTC-USD.csv        # Bitcoin 收盘价小数据集（随仓库提供）
+│   ├── Q5BTC-USD.csv        # Bitcoin 收盘价小数据集（随仓库提供）
+│   └── weather.csv          # Jena 气象数据集（随仓库提供）
 └── notebooks/
     ├── 01_airbnb_eda_and_data_quality.ipynb
     ├── 02_hotel_booking_cancellation_analysis.ipynb
     ├── 03_feature_selection.ipynb
     ├── 04_hotel_customer_segmentation.ipynb
     ├── 05_credit_card_fraud_classification.ipynb
-    └── 06_bitcoin_time_series.html
+    ├── 06_bitcoin_time_series.ipynb
+    └── 07_weather_forecasting.ipynb
 ```
 
 ## 复现方式
 
 1. 安装依赖：`pip install -r requirements.txt`
 2. 数据集已全部随仓库提供在 `data/` 目录，无需另行下载；
-3. 按 01 → 06 顺序运行各 notebook（Jupyter 中可 Kernel → Restart & Run All）。
+3. 按 01 → 07 顺序运行各 notebook（Jupyter 中可 Kernel → Restart & Run All）。
 
 ## 数据集来源
 
@@ -85,6 +94,7 @@ airbnb-hotel-booking-data-analysis/
 - Hotel Booking Demand：Kaggle - [Hotel booking demand](https://www.kaggle.com/datasets/jessemostipak/hotel-booking-demand)，原始出处 Nuno Antonio, Ana Almeida, Luis Nunes, *Hotel booking demand datasets*, Data in Brief, 2019
 - 信用卡交易数据：课程提供的 `creditcard-reduced.csv` 为缩减版（32,764 条），母集为 Kaggle - [Credit Card Fraud Detection](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)（ULB - Université Libre de Bruxelles）
 - Iris：UCI / scikit-learn 经典教学数据集
+- 气象数据：Max Planck Institute for Biogeochemistry 的 Jena Weather 数据集（课程提供）
 
 ## 说明
 

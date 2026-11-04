@@ -10,9 +10,11 @@
 | `Credit_approval.csv` | 15 KB | 信用审批小数据集，课程分类练习用 |
 | `iris.txt` | 5 KB | Iris 经典教学数据集 |
 | `Q5BTC-USD.csv` | 32 KB | Bitcoin 2018 年收盘价，用于 06 时间序列分析 |
+| `weather.csv` | 7 MB | 德国气象站 2009–2016 小时级气象记录，用于 07 月度温度预测 |
 
 数据来源：
 - Airbnb：Kaggle - [Airbnb Price Prediction](https://www.kaggle.com/datasets/stevezhenghp/airbnb-price-prediction)
 - Hotel Booking Demand：Kaggle - [Hotel booking demand](https://www.kaggle.com/datasets/jessemostipak/hotel-booking-demand)，原始出处 Nuno Antonio et al., *Data in Brief*, 2019
 - 信用卡交易：课程提供的缩减版，母集为 [Kaggle Credit Card Fraud Detection](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)
 - Bitcoin 收盘价：课程提供的 `Q5BTC-USD.csv`
+- 气象数据：Max Planck Institute for Biogeochemistry 的 Jena Weather 数据集（课程提供 `weather.csv`）
